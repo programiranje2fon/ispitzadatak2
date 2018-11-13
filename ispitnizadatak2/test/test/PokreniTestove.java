@@ -13,10 +13,7 @@ import org.junit.runner.notification.Failure;
 import zadatak.KlinikaGUITest;
 import zadatak.osoblje.LekarTest;
 
-/**
- * This class executes all tests and prints out the report.
- * 
- */
+
 public class PokreniTestove {
 
 	public static void main(String[] args) {
