@@ -25,7 +25,7 @@ public class Lekar implements Serializable {
 	}
 	
 	public void setDatumZaposlenja(GregorianCalendar datumZaposlenja) {
-		if (datumZaposlenja==null || datumZaposlenja.after(new GregorianCalendar()))
+		if (datumZaposlenja==null || !datumZaposlenja.before(new GregorianCalendar())) 
 			throw new RuntimeException("Datum ne sme biti null i mora se odnosti na proslost");
 		
 		this.datumZaposlenja = datumZaposlenja;
@@ -44,7 +44,7 @@ public class Lekar implements Serializable {
 
 	public String toString() {
 		return "Lekar [imePrezime=" + imePrezime + ", datumZaposlenja="
-				+ datumZaposlenja.getTime() + ", specijalnost=" + specijalnost + "]";
+				+ datumZaposlenja.getTime().toString() + ", specijalnost=" + specijalnost + "]";
 	}
 
 }

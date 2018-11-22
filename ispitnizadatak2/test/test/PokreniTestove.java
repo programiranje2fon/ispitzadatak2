@@ -13,7 +13,6 @@ import org.junit.runner.notification.Failure;
 import zadatak.KlinikaGUITest;
 import zadatak.osoblje.LekarTest;
 
-
 public class PokreniTestove {
 
 	public static void main(String[] args) {
