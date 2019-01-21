@@ -10,8 +10,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-import zadatak.KlinikaGUITest;
-import zadatak.osoblje.LekarTest;
+import klinika.KlinikaGUITest;
+import klinika.osoblje.LekarTest;
 
 public class PokreniTestove {
 

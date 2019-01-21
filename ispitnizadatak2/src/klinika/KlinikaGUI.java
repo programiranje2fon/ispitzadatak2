@@ -150,13 +150,15 @@ public class KlinikaGUI extends JFrame {
 					//Prolazi se kroz listu i traze se parovi lekara gde je ime
 					//isto ali je specijalnost drugacija. Ako se takvi nadju,
 					//oba lekara se serijalizuju u fajl.
-					for(int i=0;i<lekari.size()-1;i++)
+					for(int i=0;i<lekari.size()-1;i++) {
+						boolean upisanIti = false;
 						for(int j=i+1;j<lekari.size();j++)
 							if (lekari.get(i).getImePrezime().equals(lekari.get(j).getImePrezime()) &&
 									!lekari.get(i).getSpecijalnost().equals(lekari.get(j).getSpecijalnost())){
-								out.writeObject(lekari.get(i));
+								if (!upisanIti) out.writeObject(lekari.get(i));
 								out.writeObject(lekari.get(j));
 							}
+					}
 								
 					out.close();
 				}catch(Exception e1){
