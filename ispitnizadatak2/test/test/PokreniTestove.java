@@ -10,9 +10,9 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+import ispravka_koda.UpisivanjeUTXTFajl4Test;
 import klinika.KlinikaGUITest;
 import klinika.osoblje.LekarTest;
-import zadatak.ispravka_koda.UpisivanjeUTXTFajl4Test;
 
 public class PokreniTestove {
 
