@@ -50,7 +50,7 @@ public class UpisivanjeUTXTFajl4Test {
 		try {
 			input = new Scanner(new File("brojevi4.txt"));
 		} catch (FileNotFoundException e) {
-			assertTrue("Ne postoji fajl brojevi3.txt",false);
+			assertTrue("Ne postoji fajl brojevi4.txt",false);
 		}
 		List<Integer> actual = new LinkedList<>();
 		while(input.hasNextInt()) {

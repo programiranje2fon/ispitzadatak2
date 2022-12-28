@@ -1,8 +1,6 @@
-package test;
+package ispravka_koda;
 
-import ispravka_koda.UpisivanjeUTXTFajl4;
-
-public class Test {
+public class UpisivanjeUTXTFajl4Proba {
 	public static void main(String[] args) {
 		UpisivanjeUTXTFajl4.upisiArmstrongoveBrojeve();
 	}

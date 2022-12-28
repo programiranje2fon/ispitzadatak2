@@ -12,12 +12,14 @@ import org.junit.runner.notification.Failure;
 
 import klinika.KlinikaGUITest;
 import klinika.osoblje.LekarTest;
+import zadatak.ispravka_koda.UpisivanjeUTXTFajl4Test;
 
 public class PokreniTestove {
 
 	public static void main(String[] args) {
 		runTestsForClass(LekarTest.class);
 		runTestsForClass(KlinikaGUITest.class);
+		runTestsForClass(UpisivanjeUTXTFajl4Test.class);
 	}
 
 	/**
