@@ -19,6 +19,7 @@ import test.TestUtil;
 public class UpisivanjeUTXTFajl4Test {
 	@Before
 	public void setUp() throws Exception {
+		UpisivanjeUTXTFajl4.upisiArmstrongoveBrojeve();
 	}
 
 	@After
