@@ -1,12 +1,12 @@
 package klinika.osoblje;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 public class Lekar implements Serializable {
 	
 	private String imePrezime = "nepoznato";
-	private GregorianCalendar datumZaposlenja;
+	private LocalDate datumZaposlenja;
 	private String specijalnost = "nepoznato";
 	
 	public String getImePrezime() {
@@ -20,12 +20,12 @@ public class Lekar implements Serializable {
 		this.imePrezime = imePrezime;
 	}
 	
-	public GregorianCalendar getDatumZaposlenja() {
+	public LocalDate getDatumZaposlenja() {
 		return datumZaposlenja;
 	}
 	
-	public void setDatumZaposlenja(GregorianCalendar datumZaposlenja) {
-		if (datumZaposlenja==null || !datumZaposlenja.before(new GregorianCalendar())) 
+	public void setDatumZaposlenja(LocalDate datumZaposlenja) {
+		if (datumZaposlenja==null || !datumZaposlenja.isBefore(LocalDate.now()))
 			throw new RuntimeException("Datum ne sme biti null i mora se odnosti na proslost");
 		
 		this.datumZaposlenja = datumZaposlenja;
@@ -44,7 +44,7 @@ public class Lekar implements Serializable {
 
 	public String toString() {
 		return "Lekar [imePrezime=" + imePrezime + ", datumZaposlenja="
-				+ datumZaposlenja.getTime().toString() + ", specijalnost=" + specijalnost + "]";
+				+ datumZaposlenja + ", specijalnost=" + specijalnost + "]";
 	}
 
 }

@@ -1,172 +1,109 @@
 package klinika;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import klinika.osoblje.Lekar;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import klinika.osoblje.Lekar;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Dimension;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.*;
-
 public class KlinikaGUI extends JFrame {
+    private JPanel mojPanel;
+    private JTextField textFieldImePrezime;
+    private JTextField textFieldDatumZaposlenja;
+    private JComboBox comboBoxSpecijalnost;
+    private JTextArea textArea1;
+    private JButton unesiButton;
+    private JButton prikaziButton;
+    private JButton izvestajButton;
 
-	private JPanel contentPane;
-	
-	private LinkedList<Lekar> lekari = new LinkedList<Lekar>();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextArea textArea;
-	private JComboBox comboBox;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					KlinikaGUI frame = new KlinikaGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private LinkedList<Lekar> lekari = new LinkedList<Lekar>();
 
-	/**
-	 * Create the frame.
-	 */
-	public KlinikaGUI() {
-		setTitle("Klinika");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-		
-		textArea = new JTextArea();
-		contentPane.add(textArea, BorderLayout.CENTER);
-		
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(140, 10));
-		panel.setSize(new Dimension(100, 0));
-		contentPane.add(panel, BorderLayout.WEST);
-		
-		JLabel lblImePrezime = new JLabel("Ime prezime");
-		panel.add(lblImePrezime);
-		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblDatumZaposlenja = new JLabel("Datum zaposlenja");
-		panel.add(lblDatumZaposlenja);
-		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblSpecijalnost = new JLabel("Specijalnost");
-		panel.add(lblSpecijalnost);
-		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"opsta praksa", "oftalmolog", "kardiolog"}));
-		panel.add(comboBox);
-		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.SOUTH);
-		
-		JButton btnNewButton = new JButton("Unesi");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Lekar l = new Lekar();
-				l.setImePrezime(textField.getText());
-				l.setSpecijalnost((String)(comboBox.getSelectedItem()));
-				
-				//Ako je datum unet kao String u formatu "dd.mm.gggg"
-				//onda se dan, mesec i godina moraju posebno izvuci
-				//iz tog stringa i pretvoriti u cele brojeve pa tek
-				//onda uneti u GregorianCalendar.
-				String datumString = textField_1.getText();
-				
-				int dan = Integer.parseInt(datumString.substring(0,2));
-				int mesec= Integer.parseInt(datumString.substring(3,5))-1;
-				int godina= Integer.parseInt(datumString.substring(6));
-				
-				GregorianCalendar datumZaposlenja = new GregorianCalendar();
-				datumZaposlenja.set(godina, mesec, dan);
-				
-				l.setDatumZaposlenja(datumZaposlenja);
-				
-				//Provera da li se taj lekar vec nalazi  listi preko contains metode
-				//je moguca samo ako postoji equals metoda u okviru klase Lekar,
-				//a inace mora rucno. Ovde nije data equals metoda u okviru klase Lekar.
-				for(int i=0;i<lekari.size();i++)
-					if (lekari.get(i).getImePrezime().equals(l.getImePrezime())&&
-							lekari.get(i).getSpecijalnost().equals(l.getSpecijalnost())&&
-							lekari.get(i).getDatumZaposlenja().equals(l.getDatumZaposlenja())){
-						textArea.setText("Greska, taj lekar je vec unet");
-						return;
-					}
-				
-				lekari.add(l);
-			}
-		});
-		panel_1.add(btnNewButton);
-		
-		JButton btnPrikazi = new JButton("Prikazi");
-		btnPrikazi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for(int i=lekari.size()-1;i>=0;i--)
-					textArea.append(lekari.get(i).toString()+'\n');
-			}
-		});
-		panel_1.add(btnPrikazi);
-		
-		JButton btnIzvestaj = new JButton("Izvestaj");
-		btnIzvestaj.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-					ObjectOutputStream out =
-							new ObjectOutputStream(
-									new BufferedOutputStream(
-											new FileOutputStream("izvestaj.out")));
-					
-					//Prolazi se kroz listu i traze se parovi lekara gde je ime
-					//isto ali je specijalnost drugacija. Ako se takvi nadju,
-					//oba lekara se serijalizuju u fajl.
-					for(int i=0;i<lekari.size()-1;i++) {
-						boolean upisanIti = false;
-						for(int j=i+1;j<lekari.size();j++)
-							if (lekari.get(i).getImePrezime().equals(lekari.get(j).getImePrezime()) &&
-									!lekari.get(i).getSpecijalnost().equals(lekari.get(j).getSpecijalnost())){
-								if (!upisanIti) out.writeObject(lekari.get(i));
-								out.writeObject(lekari.get(j));
-							}
-					}
-								
-					out.close();
-				}catch(Exception e1){
-					e1.printStackTrace();
-				}
-			}
-		});
-		panel_1.add(btnIzvestaj);
-	}
+    public KlinikaGUI(){
+        setContentPane(mojPanel);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        setTitle("Klinika");
+        unesiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Lekar l = new Lekar();
+                l.setImePrezime(textFieldImePrezime.getText());
+                l.setSpecijalnost((String)(comboBoxSpecijalnost.getSelectedItem()));
 
+                //Ako je datum unet kao String u formatu "dd.mm.gggg"
+                //onda se dan, mesec i godina moraju posebno izvuci
+                //iz tog stringa i pretvoriti u cele brojeve pa tek
+                //onda uneti u GregorianCalendar.
+                String datumString = textFieldDatumZaposlenja.getText();
+
+                int dan = Integer.parseInt(datumString.substring(0,2));
+                int mesec= Integer.parseInt(datumString.substring(3,5))-1;
+                int godina= Integer.parseInt(datumString.substring(6));
+
+                LocalDate datumZaposlenja = LocalDate.of(godina, mesec, dan);
+
+                l.setDatumZaposlenja(datumZaposlenja);
+
+                //Provera da li se taj lekar vec nalazi  listi preko contains metode
+                //je moguca samo ako postoji equals metoda u okviru klase Lekar,
+                //a inace mora rucno. Ovde nije data equals metoda u okviru klase Lekar.
+                for(int i=0;i<lekari.size();i++)
+                    if (lekari.get(i).getImePrezime().equals(l.getImePrezime())&&
+                            lekari.get(i).getSpecijalnost().equals(l.getSpecijalnost())&&
+                            lekari.get(i).getDatumZaposlenja().equals(l.getDatumZaposlenja())){
+                        textArea1.setText("Greska, taj lekar je vec unet");
+                        return;
+                    }
+
+                lekari.add(l);
+            }
+        });
+        prikaziButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int i=lekari.size()-1;i>=0;i--)
+                    textArea1.append(lekari.get(i).toString()+System.lineSeparator());
+            }
+        });
+        izvestajButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    ObjectOutputStream out =
+                            new ObjectOutputStream(
+                                    new BufferedOutputStream(
+                                            new FileOutputStream("izvestaj.out")));
+
+                    //Prolazi se kroz listu i traze se parovi lekara gde je ime
+                    //isto ali je specijalnost drugacija. Ako se takvi nadju,
+                    //oba lekara se serijalizuju u fajl.
+                    for(int i=0;i<lekari.size()-1;i++) {
+                        boolean upisanIti = false;
+                        for(int j=i+1;j<lekari.size();j++)
+                            if (lekari.get(i).getImePrezime().equals(lekari.get(j).getImePrezime()) &&
+                                    !lekari.get(i).getSpecijalnost().equals(lekari.get(j).getSpecijalnost())){
+                                if (!upisanIti) out.writeObject(lekari.get(i));
+                                out.writeObject(lekari.get(j));
+                            }
+                    }
+
+                    out.close();
+                }catch(Exception e1){
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        new KlinikaGUI().setVisible(true);
+    }
 }

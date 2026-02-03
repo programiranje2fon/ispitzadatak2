@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="klinika.KlinikaGUI">
+  <grid id="27dc6" binding="mojPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="701" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="4a990" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="West"/>
+        <properties>
+          <preferredSize width="140" height="44"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="ee67e" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Ime i prezime"/>
+            </properties>
+          </component>
+          <component id="acb40" class="javax.swing.JTextField" binding="textFieldImePrezime">
+            <constraints/>
+            <properties>
+              <columns value="10"/>
+            </properties>
+          </component>
+          <component id="d9083" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Datum zaposlenja"/>
+            </properties>
+          </component>
+          <component id="3341c" class="javax.swing.JTextField" binding="textFieldDatumZaposlenja">
+            <constraints/>
+            <properties>
+              <columns value="10"/>
+            </properties>
+          </component>
+          <component id="1d837" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Specijalnost"/>
+            </properties>
+          </component>
+          <component id="23c47" class="javax.swing.JComboBox" binding="comboBoxSpecijalnost">
+            <constraints/>
+            <properties>
+              <model>
+                <item value="opsta praksa"/>
+                <item value="oftalmolog"/>
+                <item value="kardiolog"/>
+              </model>
+              <preferredSize width="120" height="24"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="e6c47">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="acc5d" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="886b4" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="b237f" class="javax.swing.JButton" binding="unesiButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Unesi"/>
+            </properties>
+          </component>
+          <component id="c120c" class="javax.swing.JButton" binding="prikaziButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Prikazi"/>
+            </properties>
+          </component>
+          <component id="ee32" class="javax.swing.JButton" binding="izvestajButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Izvestaj"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import klinika.osoblje.Lekar;
 import test.TestUtil;
 
 public class LekarTest {
@@ -59,8 +59,8 @@ public class LekarTest {
 
 	@Test
 	public void atribut_datumZaposlenja_pocetnaVrednost() {
-		GregorianCalendar expected = null;
-		GregorianCalendar actual = (GregorianCalendar) TestUtil.getFieldValue(instance, "datumZaposlenja");
+		LocalDate expected = null;
+		LocalDate actual = (LocalDate) TestUtil.getFieldValue(instance, "datumZaposlenja");
 		assertEquals("Atribut datumZaposlenja ima vrednost " + actual + ", a potrebno je da ima vrednost " + expected,
 				expected, actual);
 	}
@@ -115,12 +115,12 @@ public class LekarTest {
 	@Test
 	public void metoda_setDatumZaposlenja_vidljivost() {
 		assertTrue("Metoda setDatumZaposlenja nije javna", TestUtil.hasMethodModifier(Lekar.class, "setDatumZaposlenja",
-				new Class<?>[] { GregorianCalendar.class }, Modifier.PUBLIC));
+				new Class<?>[] { LocalDate.class }, Modifier.PUBLIC));
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void metoda_setDatumZaposlenja_null() {
-		GregorianCalendar arg = null;
+		LocalDate arg = null;
 		instance.setDatumZaposlenja(arg);
 		assertTrue("Za prosledjeni argument " + (arg == null ? null : "\"" + arg.toString() + "\"")
 				+ ", metoda setDatumZaposlenja ne baca neproveravani izuzetak", false);
@@ -128,27 +128,27 @@ public class LekarTest {
 
 	@Test(expected = RuntimeException.class)
 	public void metoda_setDatumZaposlenja_trenutniDatum() {
-		GregorianCalendar arg = new GregorianCalendar();
+		LocalDate arg = LocalDate.now();
 		instance.setDatumZaposlenja(arg);
-		assertTrue("Za prosledjeni argument " + (arg == null ? null : "\"" + arg.getTime().toString() + "\"")
+		assertTrue("Za prosledjeni argument " + (arg == null ? null : "\"" + arg + "\"")
 				+ ", metoda setDatumZaposlenja ne baca neproveravani izuzetak", false);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void metoda_setDatumZaposlenja_buduciDatum() {
-		GregorianCalendar arg = new GregorianCalendar(new GregorianCalendar().get(GregorianCalendar.YEAR) + 1, 1, 1);
+		LocalDate arg = LocalDate.now().plusYears(1);
 		instance.setDatumZaposlenja(arg);
-		assertTrue("Za prosledjeni argument " + (arg == null ? null : "\"" + arg.getTime().toString() + "\"")
+		assertTrue("Za prosledjeni argument " + (arg == null ? null : "\"" + arg + "\"")
 				+ ", metoda setDatumZaposlenja ne baca neproveravani izuzetak", false);
 	}
 
 	@Test
 	public void metoda_setDatumZaposlenja_prosliDatum() {
-		GregorianCalendar arg = new GregorianCalendar(new GregorianCalendar().get(GregorianCalendar.YEAR) - 1, 1, 1);
+		LocalDate arg = LocalDate.now().minusYears(1);
 		instance.setDatumZaposlenja(arg);
-		GregorianCalendar actual = (GregorianCalendar) TestUtil.getFieldValue(instance, "datumZaposlenja");
+        LocalDate actual = (LocalDate) TestUtil.getFieldValue(instance, "datumZaposlenja");
 		assertTrue(
-				"Za prosledjeni argument " + (arg == null ? null : "\"" + arg.getTime().toString() + "\"")
+				"Za prosledjeni argument " + (arg == null ? null : "\"" + arg + "\"")
 						+ ", nakon izvrsenja metode setDatumZaposlenja atribut datumZaposlenja ima vrednost " + actual,
 				actual.equals(arg));
 	}
@@ -222,8 +222,7 @@ public class LekarTest {
 	@Test
 	public void metoda_toString() {
 		String imePrezime = "Marko Markovic";
-		GregorianCalendar datumZaposlenja = new GregorianCalendar(
-				new GregorianCalendar().get(GregorianCalendar.YEAR) - 1, 1, 1);
+		LocalDate datumZaposlenja = LocalDate.of(2001, 12, 31);
 		String specijalnost = "Kardiologija";
 		instance.setImePrezime(imePrezime);
 		instance.setDatumZaposlenja(datumZaposlenja);
@@ -232,10 +231,12 @@ public class LekarTest {
 		assertTrue("String koji vraca metoda to String ne sadrzi vrednost atributa imePrezime",
 				result.indexOf(instance.getImePrezime()) != -1);
 		assertTrue("String koji vraca metoda to String ne sadrzi godinu zaposlenja",
-				result.indexOf(((Integer) instance.getDatumZaposlenja().get(GregorianCalendar.YEAR)).toString()) != -1);
-		assertTrue("String koji vraca metoda to String ne sadrzi dan zaposlenja",
-				result.indexOf(((Integer) instance.getDatumZaposlenja().get(GregorianCalendar.DAY_OF_MONTH)).toString()) != -1);
-		assertTrue("String koji vraca metoda to String ne sadrzi vrednost atributa specijalnost",
+				result.indexOf("2001") != -1);
+		assertTrue("String koji vraca metoda to String ne sadrzi mesec zaposlenja",
+				result.indexOf("12") != -1);
+        assertTrue("String koji vraca metoda to String ne sadrzi dan zaposlenja",
+                result.indexOf("31") != -1);
+        assertTrue("String koji vraca metoda to String ne sadrzi vrednost atributa specijalnost",
 				result.indexOf(instance.getSpecijalnost()) != -1);
 	}
 
